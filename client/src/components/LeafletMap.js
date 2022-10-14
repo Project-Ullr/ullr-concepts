@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import { CustomMarkers } from './CustomMarkers'
 import { MapOverlay } from './MapOverlay'
 import 'leaflet/dist/leaflet.css'
 
-export const LeafletMap = () => {
+export const LeafletMap = props => {
     const [target, setTarget] = useState(
         {
             "_id": 516,
@@ -15,15 +15,18 @@ export const LeafletMap = () => {
             "__v": 0
         })
 
+    const { height } = props
+
     return (
-        <div className='relative border-4 border-neutral-800'>
+        <div className='border-4 border-neutral-800'>
             <MapContainer
                 center={[target.lat, target.lng]}
-                zoom={13}
-                className='w-[600px] h-[800px]'
+                zoom={15}
+                maxZoom={20}
+                zoomSnap={0.1}
+                style={{ height: height }}
                 zoomControl={false}
                 scrollWheelZoom={true}
-                zoomSnap={0}
                 whenReady={map => {
                     setTimeout(() => {
                         map.target.setView([target.lat, target.lng])
@@ -31,25 +34,12 @@ export const LeafletMap = () => {
                 }}
             >
                 <TileLayer
-                    attribution='&copy; Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.'
-                    url="https://stamen-tiles.a.ssl.fastly.net/terrain/{z}/{x}/{y}.jpg"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'
                 />
                 {/* Markers below here. */}
                 <CustomMarkers setTarget={setTarget} />
             </MapContainer>
-            {/* Overlay stuff */}
-            <MapOverlay>
-                <div className='h-full flex flex-col justify-between'>
-                    <h3>Current Selection</h3>
-                    <div>
-                        <p className='text-sm'>{target.name}</p>
-                        <p className='text-sm'><a href={target.website} target="_blank" rel='noreferrer'>{target.website}</a></p>
-                    </div>
-                </div>
-                <div>
-                    <h3>Weather</h3>
-                </div>
-            </MapOverlay>
         </div>
     )
 }

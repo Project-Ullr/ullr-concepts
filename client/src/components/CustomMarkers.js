@@ -13,7 +13,6 @@ const DivIcon = L.divIcon({
 export const CustomMarkers = props => {
     const [allResorts, setAllResorts] = useState([])
     const [visibleResorts, setVisibleResorts] = useState([])
-    const [popup, setPopup] = useState("")
 
     const map = useMap()
 
@@ -25,7 +24,6 @@ export const CustomMarkers = props => {
         axios.get('http://localhost:8000/api/get_all_resorts')
             .then(results => setAllResorts(results.data))
             .catch(error => console.error(error))
-
     }, [])
 
     //update on screen markers
@@ -57,6 +55,7 @@ export const CustomMarkers = props => {
                         eventHandlers={{
                             click: e => {
                                 setTarget(resort)
+                                map.flyTo([resort.lat, resort.lng], 18, { duration: 0.5 })
                             },
                             mouseover: e => {
                                 e.target.openPopup()

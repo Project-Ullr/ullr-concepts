@@ -1,14 +1,17 @@
 import React from 'react'
-import { PigeonMap } from './components/depricated/PigeonMap'
-import { GoogleMap } from './components/depricated/GoogleMap'
-import { LeafletMap } from './components/LeafletMap'
+import { RegisterPage } from './views/RegisterPage'
+import { LoginPage } from './views/LoginPage'
+import { Dashboard } from './views/Dashboard'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 export const App = () => {
     return (
-        <div className='flex justify-center items-center bg-neutral-200 absolute left-0 right-0 top-0 bottom-0'>
-            {/* <PigeonMap /> */}
-            {/* <GoogleMap /> */}
-            <LeafletMap />
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' element={<Dashboard />} />
+                <Route path='/login' element={<LoginPage />} />
+                <Route path='/register' element={<RegisterPage />} />
+            </Routes>
+        </BrowserRouter>
     )
 }
