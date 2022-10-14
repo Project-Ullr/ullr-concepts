@@ -1,0 +1,9 @@
+name: Create Changelog
+run-name: ${{ github.actor }} is creating a changelog
+on: [push]
+jobs:
+  Create-Changelog:
+    runs-on: ubuntu-lastest
+    steps:
+      - name: generate-changelog-action
+        uses: ScottBrenner/generate-changelog-action@v1.3.3
