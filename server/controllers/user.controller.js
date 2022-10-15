@@ -1,6 +1,8 @@
 const User = require('../models/user.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const path = require('path')
+const multer = require('multer')
 
 module.exports = {
     register: (request, response) => {
@@ -61,6 +63,21 @@ module.exports = {
 
         User.findOne({ _id: decodedJWT.payload.id })
             .then(user => response.json(user))
+            .catch(error => response.json(error))
+    },
+
+    getAll: (request, response) => {
+        User.find({})
+            .then(allUsers => response.json(allUsers))
+            .catch(error => response.json(error))
+    },
+
+    addFriend: (request, response) => {
+        User.findOne({ _id: request.params.id })
+            .then(friend => {
+                User.findOneAndUpdate({ _id: request.body.userid, friends: { $ne: friend._id } }, { $push: { friends: friend._id } })
+                response.json(friend)
+            })
             .catch(error => response.json(error))
     }
 }

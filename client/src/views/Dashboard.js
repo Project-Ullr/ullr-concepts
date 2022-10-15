@@ -8,6 +8,7 @@ export const Dashboard = () => {
     const nav = useNavigate()
 
     const [user, setUser] = useState({})
+    const [requestid, setRequestid] = useState('')
 
     // check if user is logged in.
     useEffect(() => {
@@ -20,6 +21,16 @@ export const Dashboard = () => {
             })
         // eslint-disable-next-line
     }, [])
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        axios.put(`http://localhost:8000/api/users/${requestid}/addFriend`, {
+            userid: user._id
+        }, { withCredentials: true })
+            .then(() => {
+                setRequestid('')
+            })
+    }
 
     return (
         <>
@@ -40,6 +51,10 @@ export const Dashboard = () => {
                     <h3 className='text-5xl mb-10'>Getting Started</h3>
                 </div>
                 <LeafletMap height={500} />
+                <form onSubmit={handleSubmit}>
+                    <input type="text" name="userid" id="userid" value={requestid} onChange={e => setRequestid(e.target.value)} />
+                    <input type="submit" value="Add Friend" />
+                </form>
             </div>
         </>
     )
